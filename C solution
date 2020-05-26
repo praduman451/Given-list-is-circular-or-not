@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node
+{
+  int data;
+  struct Node* next;
+};
+
+void printList(struct Node* head)
+{
+  struct Node* t=head;
+  if(head == NULL) return;
+  do{
+    printf("%d ", t->data);
+    t = t->next;
+  }while(t != head);
+}
+
+struct Node* insertBeg(struct Node* head, int data)
+{
+  struct Node* ptr1 = (struct Node*)malloc(sizeof(struct Node));
+  struct Node* temp = head;
+  ptr1->data = data;
+  ptr1->next = head;
+
+  if (head != NULL) {
+    while (temp->next != head)
+      temp = temp->next;
+    temp->next = ptr1;
+  } else
+    ptr1->next = ptr1;
+  head = ptr1;
+  return head;
+}
+
+void insertEnd(struct Node** head, int data)
+{
+  struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+  struct Node *last = *head;
+  node->data  = data;                                
+  node->next = NULL;                                 
+  if (*head == NULL)                             
+  {
+    *head = node;
+    return;
+  }
+  while (last->next != NULL) 
+    last = last->next;
+  last->next = node;  
+  return;
+}
+int isCircular(struct Node* head)
+{ 
+    if (head == NULL) 
+       return 1; 
+    struct Node *node = head->next; 
+  
+    while (node != NULL && node != head) 
+       node = node->next; 
+  
+     
+    if(node==head)
+      return 1;
+  else
+    return 0;
+   }
+
+int main()
+{
+  int t;
+  scanf("%d", &t);
+  while(t--)
+  {
+    struct Node* head = NULL;
+    int n,m;
+    scanf("%d", &n);
+    if(n<=4){
+      while(n--)
+      {
+        scanf("%d", &m);
+        head = insertBeg(head, m);
+      }
+    }
+    else
+    {
+      while(n--)
+      {
+        scanf("%d",&m);
+        insertEnd(&head, m);
+      }
+    }
+    n = isCircular(head);
+    printf("%d\n", n);
+  }
+  return 0;
+}
